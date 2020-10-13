@@ -74,9 +74,9 @@ int aviso_alta (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, i
 			{
 				pArrayAviso[*indiceAvisos] = bufferAviso; // Guardo en el indice de avisos lo que contiene la variable auxiliar bufferAviso.
 				pArrayAviso[*indiceAvisos].idAviso = aviso_generarNuevoId(); // Genero un nuevo ID de aviso.
-				printf("\nEl ID generado para este aviso es el: %d\n", pArrayAviso[*indiceAvisos].idAviso);
 				pArrayAviso[*indiceAvisos].isEmpty = FALSE; // Indico que ese índice de mi array de avisos ya no está vacío.
 				pArrayAviso[*indiceAvisos].estado = AVISO_ACTIVO; // Lo cargo como un aviso activo ya que así lo pide la consigna.
+				printf("\nEl ID generado para este aviso es el: %d\n", pArrayAviso[*indiceAvisos].idAviso);
 				*indiceAvisos = *indiceAvisos + 1; // Aumento el contador del índice de avisos en 1 y retorno por valor de referencia.
 				retorno = 0;
 			}

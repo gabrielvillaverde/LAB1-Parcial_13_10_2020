@@ -288,3 +288,72 @@ int cliente_buscarIndicePorId (Cliente * pArrayCliente, int limiteCliente, int i
 	}
 	return retorno;
 }
+
+/*int cliente_ordenarPorNombre (Cliente * pArrayCliente, int limiteCliente)
+{
+	int retorno = -1;
+	int flagSwap;
+	int indiceCliente;
+
+	Cliente bufferAuxiliar;
+
+	if(pArrayCliente != NULL && limiteCliente > 0)
+	{
+		do
+		{
+			flagSwap = 0;
+			for(indiceCliente = 0 ; indiceCliente < limiteCliente-1 ; indiceCliente++)
+			{
+				if(strncmp(pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente+1].nombre, SIZE_NOMBRE) > 0)
+				{
+					flagSwap = 1;
+					bufferAuxiliar = pArrayCliente[indiceCliente];
+					pArrayCliente[indiceCliente] = pArrayCliente[indiceCliente+1];
+					pArrayCliente[indiceCliente+1] = bufferAuxiliar;
+				}
+			}
+			limiteCliente--;
+		}while(flagSwap);
+	}
+	return retorno;
+}*/
+
+/*int cliente_ordenarPorNombreLuegoPorId (Cliente * pArrayCliente, int limiteCliente)
+{
+	int retorno = -1;
+	int flagSwap;
+	int indiceCliente;
+
+	Cliente bufferAuxiliar;
+
+	if(pArrayCliente != NULL && limiteCliente > 0)
+	{
+		do
+		{
+			flagSwap = 0;
+			for(indiceCliente = 0 ; indiceCliente < limiteCliente-1 ; indiceCliente++)
+			{
+				if(strncmp(pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente+1].nombre, SIZE_NOMBRE) > 0)
+				{
+					flagSwap = 1;
+					bufferAuxiliar = pArrayCliente[indiceCliente];
+					pArrayCliente[indiceCliente] = pArrayCliente[indiceCliente+1];
+					pArrayCliente[indiceCliente+1] = bufferAuxiliar;
+				}
+				else if(strncmp(pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente+1].nombre, SIZE_NOMBRE) == 0 &&
+						pArrayCliente[indiceCliente].idCliente < pArrayCliente[indiceCliente+1].idCliente)
+				{
+					{
+						flagSwap = 1;
+						bufferAuxiliar = pArrayCliente[indiceCliente];
+						pArrayCliente[indiceCliente] = pArrayCliente[indiceCliente+1];
+						pArrayCliente[indiceCliente+1] = bufferAuxiliar;
+					}
+				}
+			}
+			limiteCliente--;
+		}while(flagSwap);
+	}
+	return retorno;
+}
+*/
