@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : Clase_14_PARCIAL.c
+ Name        : PARCIAL.c
  Author      : 
  Version     :
  Copyright   : Your copyright notice
