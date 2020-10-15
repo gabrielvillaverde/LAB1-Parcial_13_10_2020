@@ -75,7 +75,7 @@ int main(void) {
 				if(contadorClientes > 0 )
 				{
 					cliente_imprimir(arrayCliente, QTY_CLIENTES);
-					clienteAviso_baja(arrayAviso, QTY_AVISOS, arrayCliente, QTY_CLIENTES); // Cambiar por clienteAviso_baja
+					clienteAviso_baja(arrayAviso, QTY_AVISOS, arrayCliente, QTY_CLIENTES);
 					contadorClientes--;
 				}
 				else
@@ -110,7 +110,7 @@ int main(void) {
 			case 8:
 				do
 				{
-					if(utn_getNumberInt("\nUsted está en el submenú de informes, seleccione una opción: \n\n1 - Cliente con más avisos.\n2 - Cantidad de avisos pausados.\n3 - Rubro con más avisos.\n4 - Salir del submenú de informes.\n", "\nError. Seleccione una opción válida (1-4)\n", &opcionSubMenu, 2, 1, 4) == 0)
+				if(utn_getNumberInt("\nUsted está en el submenú de informes, seleccione una opción: \n\n1 - Cliente con más avisos.\n2 - Cantidad de avisos pausados.\n3 - Rubro con más avisos.\n4 - Salir del submenú de informes.\n", "\nError. Seleccione una opción válida (1-4)\n", &opcionSubMenu, 2, 1, 4) == 0)
 					{
 						switch(opcionSubMenu)
 						{
