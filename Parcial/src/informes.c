@@ -39,7 +39,7 @@ int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCli
 		{
 			if(pArrayCliente[i].isEmpty == FALSE) // Si la posición "i" del array de clientes NO está vacía...
 			{
-				buffer = aviso_contarAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, pArrayCliente[i].idCliente); // Me guardo en buffer lo que devuelve la función de contar avisos por ID
+				buffer = aviso_contarAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente[i].idCliente); // Me guardo en buffer lo que devuelve la función de contar avisos por ID
 				if(flag == FALSE)
 				{
 					nuevoMaximo = buffer; // Indico que el nuevo máximo es lo que guarda la variable buffer, que obtuvo de contar avisos por ID del cliente.

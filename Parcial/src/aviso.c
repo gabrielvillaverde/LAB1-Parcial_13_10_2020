@@ -374,6 +374,7 @@ int aviso_imprimirTodosLosAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAvi
 		{
 			if(pArrayAviso[i].idCliente == idCliente) // Si el índice de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
 			{
+				// A diferencia de la función de arriba, lo llamo antes ya que quiero imprimir todo, independientemente de si es activo o pausado. Lo único que corroboro es que coincida con el ID del cliente que busco.
 				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por el ID del cliente al que corresponde ese aviso, y devuelve el índice de ese cliente por valor de referencia.
 				if(pArrayAviso[i].estado == AVISO_ACTIVO) // Si el estado del aviso está activo...
 				{
@@ -400,15 +401,15 @@ int aviso_imprimirTodosLosAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAvi
 * \param idCliente, recibe el ID del cliente.
 * \return (-1) ERROR / 0 OK
 */
-int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idCliente)
+int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int idCliente)
 {
 	int contadorAvisos = 0; // Hago un contador de avisos.
 
-	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
+	if (pArrayAviso != NULL && limiteAviso > 0)
 	{
-		for(int i = 0 ; i < limiteCliente ; i++) // Recorro mi array de clientes
+		for(int i = 0 ; i < limiteAviso ; i++) // Recorro mi array de avisos
 		{
-			if(pArrayAviso[i].idCliente == idCliente) // Si la posición i de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
+			if(pArrayAviso[i].idCliente == idCliente) // Si el índice de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
 			{
 				contadorAvisos++; // Aumento el contador de avisos.
 			}
@@ -416,6 +417,34 @@ int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Client
 	}
 	return contadorAvisos;
 }
+
+/**
+* Función que cuenta la cantidad de avisos por ID del cliente.
+* \param pArrayAviso, recibe el array de avisos.
+* \param limiteAviso, recibe el limite de los avisos.
+* \param pArrayCliente, recibe el array de clientes.
+* \param limiteCliente, recibe el limite de los clientes.
+* \param idCliente, recibe el ID del cliente.
+* \return (-1) ERROR / 0 OK
+
+int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idCliente)
+{
+	int contadorAvisos = 0; // Hago un contador de avisos.
+
+	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
+	{
+		for(int i = 0 ; i < limiteCliente ; i++) // Recorro mi array
+		{
+			if(pArrayAviso[i].idCliente == idCliente) // Si el índice de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
+			{
+				contadorAvisos++; // Aumento el contador de avisos.
+			}
+		}
+	}
+	return contadorAvisos;
+}*/
+
+
 
 /**
 * Función que imprime los avisos por estado.
@@ -439,11 +468,11 @@ int aviso_imprimirPorEstado (Aviso * pArrayAviso, int limiteAviso, Cliente * pAr
 			if(pArrayAviso[i].estado == estadoAviso && pArrayAviso[i].isEmpty == FALSE) // Chequeo que el estado de ese índice sea lo que recibe estadoAviso (PAUSADO/ACTIVO) y que además ese índice esté cargado.
 			{
 				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca un índice de cliente por ID y devuelve por valor de referencia el índice de dicho cliente.
-				if(pArrayAviso[i].estado == AVISO_PAUSADO)
+				if(pArrayAviso[i].estado == AVISO_PAUSADO) // Si el estado es pausado...
 				{
 					sprintf(strEstado,"Pausado"); // Cargo la cadena strEstado con "Pausado".
 				}
-				else
+				else // En cambio si el estado es activo...
 				{
 					sprintf(strEstado,"Activo"); // Cargo la cadena strEstado con "Pausado".
 
@@ -474,7 +503,7 @@ int aviso_buscarLibre (Aviso * pArrayAviso, int limiteAviso)
 		{
 			if(pArrayAviso[i].isEmpty == TRUE) // Si el array de avisos en la posición i está vacío...
 			{
-				retorno = i; // Devuelvo i por valor de retorno.
+				retorno = i; // Devuelvo el índice libre del array de avisos por valor de retorno.
 				break;
 			}
 		}
@@ -526,9 +555,9 @@ int aviso_buscarIndicePorId (Aviso * pArrayAviso, int limiteAviso, int idBuscado
 	{
 		for (i = 0; i < limiteAviso ; i++) // Recorro el array de avisos
 		{
-			if(pArrayAviso[i].isEmpty == FALSE && pArrayAviso[i].idAviso == idBuscado) // Si la posición i del array no está vacía, y además coincide en el campo idAviso con el idBuscado...
+			if(pArrayAviso[i].isEmpty == FALSE && pArrayAviso[i].idAviso == idBuscado) // Si el índice del array de avisos NO está vacío, y además coincide en el campo idAviso con el idBuscado...
 			{
-				*pIndice = i; // Devuelvo i por valor de referencia.
+				*pIndice = i; // Devuelvo ese índice del array de avisos por valor de referencia.
 				retorno = 0;
 				break;
 			}
@@ -538,23 +567,26 @@ int aviso_buscarIndicePorId (Aviso * pArrayAviso, int limiteAviso, int idBuscado
 }
 
 /**
-* Función que borra un índice del array de avisos por ID.
+* Función que borra un índice del array de avisos por ID del cliente.
 * \param pArrayAviso, recibe el array de avisos.
 * \param limiteAviso, recibe el limite de los avisos.
 * \param idABorrar, recibe el ID que va a ser borrado.
 * \return (-1) ERROR / 0 OK
 */
-int aviso_borrarPorId(Aviso * pArrayAviso, int limiteAviso, int idABorrar)
+int aviso_borrarPorIdCliente(Aviso * pArrayAviso, int limiteAviso, int idClienteABorrar)
 {
 	int retorno = -1;
 
-	for (int i = 0 ; i < limiteAviso ; i++)
+	if (pArrayAviso != NULL && limiteAviso > 0)
 	{
-		if(pArrayAviso[i].idCliente == idABorrar) // Si el array de avisos, en la posición i del campo idCliente coincide con el idABorrar...
+		for (int i = 0 ; i < limiteAviso ; i++) // Recorro el array de avisos
 		{
-			pArrayAviso[i].isEmpty = TRUE; // Entonces modifico mi flag de isEmpty e indico que ahora sí está vacío.
+			if(pArrayAviso[i].idCliente == idClienteABorrar) // Si el índice del array de avisos en el campo idCliente coincide con el idClienteABorrar
+			{
+				pArrayAviso[i].isEmpty = TRUE; // Entonces modifico mi flag de isEmpty del array de avisos en esa posición e indico que ahora sí está vacío.
+				retorno = 0;
+			}
 		}
 	}
-	retorno = 0;
 	return retorno;
 }

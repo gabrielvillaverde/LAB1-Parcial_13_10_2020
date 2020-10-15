@@ -263,10 +263,10 @@ int cliente_buscarLibreRef (Cliente * pArrayCliente, int limiteCliente, int * pI
 }
 
 /**
-* Función que busca el índice en el array de clientes por ID.
+* Función que busca el índice en el array de clientes por ID del cliente.
 * \param pArrayCliente, recibe el array de clientes.
 * \param limiteCliente, recibe el limite de los clientes.
-* \param idBuscado, recibe el ID que se está buscando.
+* \param idBuscado, recibe el ID del cliente que se está buscando.
 * \param pIndice, es el puntero al índice que se está buscando, devuelve el índice por valor de referencia.
 * \return (-1) ERROR / 0 OK
 */
@@ -281,7 +281,7 @@ int cliente_buscarIndicePorId (Cliente * pArrayCliente, int limiteCliente, int i
 		{
 			if(pArrayCliente[i].isEmpty == FALSE && pArrayCliente[i].idCliente == idBuscado) // Si la posición i del array no está vacía, y además coincide en el campo idCliente con el idBuscado...
 			{
-				*pIndice = i; // Devuelvo i por valor de referencia.
+				*pIndice = i; // Devuelvo el índice por valor de referencia.
 				retorno = 0;
 				break;
 			}

@@ -23,24 +23,24 @@
 int clienteAviso_baja (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente)
 {
 	int retorno = -1;
-	int idABorrar;
-	int indiceABorrar;
+	int idClienteABorrar;
+	int indiceClienteABorrar;
 	int opcionDeEliminar;
 
-	if (pArrayAviso != NULL && limiteAviso > 0)
+	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
 	{
-		if(		utn_getNumberInt("\nIngrese el ID del cliente que quiere borrar:\n","\nError, ID inválido.\n",&idABorrar,2,0,9999) == 0 && // Llamo a la función que obtiene un número y lo guardo en idABorrar.
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, idABorrar, &indiceABorrar) != -1) // Llamo a la función para buscar el ID de un cliente, si es distinto de -1 es porque encontró un ID.
+		if(		utn_getNumberInt("\nIngrese el ID del cliente que quiere borrar:\n","\nError, ID inválido.\n",&idClienteABorrar,2,0,9999) == 0 && // Llamo a la función que obtiene un número y lo guardo en idClienteABorrar.
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, idClienteABorrar, &indiceClienteABorrar) != -1) // Llamo a la función para buscar el ID de un cliente, si es distinto de -1 es porque encontró un ID para dar de baja.
 		{
 			printf("\nA continuación se listan los avisos que corresponden al ID seleccionado:\n");
-			if(aviso_imprimirTodosLosAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idABorrar) == 0) // Imprimo los avisos que corresponden a ese ID del cliente.
+			if(aviso_imprimirTodosLosAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idClienteABorrar) == 0) // Llamo a la función que imprime todos los avisos que corresponden al ID que obtengo con idClienteABorrar.
 			{
 				if(utn_getNumberInt("\n¿Desea borrar este cliente junto con todas sus publicaciones? [1 - SI] - [2 - NO]\n", "Error, ingrese: [1 - SI] - [2 - NO].\n", &opcionDeEliminar, 2, 1, 2) == 0) // Llamo a la función que obtiene un número y lo guardo en opcionDeEliminar.
 				{
 					if(opcionDeEliminar == 1) // Si la opción de eliminar es == 1, es porque quiere borrar.
 					{
-							aviso_borrarPorId(pArrayAviso, limiteAviso, idABorrar); // Llamo a la función para borrar el aviso por ID del cliente, ya que lo recibo desde idABorrar.
-							pArrayCliente[indiceABorrar].isEmpty = TRUE; // Indico que el elemento de esa posición del array de clientes está vacío.
+							aviso_borrarPorIdCliente(pArrayAviso, limiteAviso, idClienteABorrar); // Llamo a la función para borrar el aviso por ID del cliente, ya que lo recibo desde idClienteABorrar.
+							pArrayCliente[indiceClienteABorrar].isEmpty = TRUE; // Indico que índice en esa posición del array de clientes está vacío.
 							printf("\nSe ha borrado el cliente junto con todas sus publicaciones.\n");
 					}
 				}
@@ -70,16 +70,16 @@ int clienteAviso_avisosActivosImprimir (Cliente * pArrayCliente, int limiteClien
 {
 	int retorno = -1;
 
-	if (pArrayCliente != NULL && limiteCliente > 0)
+	if (pArrayCliente != NULL && limiteCliente > 0 && pArrayAviso != NULL && limiteAviso > 0)
 	{
-		for (int i = 0 ; i < limiteCliente ; i++) // Recorro el array de clientes
+		for (int indiceCliente = 0 ; indiceCliente < limiteCliente ; indiceCliente++) // Recorro todo el array de clientes...
 		{
-			if(pArrayCliente[i].isEmpty == FALSE) // Si la posición "i" del array NO está vacía.
+			if(pArrayCliente[indiceCliente].isEmpty == FALSE) // Si el índice del array de clientes no está vacío...
 			{
 				// Estoy en condiciones de poder imprimir...
 				printf("\n##########################################\n");
-				printf("\nID: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s\n",pArrayCliente[i].idCliente,pArrayCliente[i].nombre, pArrayCliente[i].apellido, pArrayCliente[i].cuit); // Me imprimo los datos del cliente.
-				aviso_imprimirAvisoActivoPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, pArrayCliente[i].idCliente); // Llamo a la función que imprime avisos activos por ID del cliente.
+				printf("\nID: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s\n",pArrayCliente[indiceCliente].idCliente, pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente].apellido, pArrayCliente[indiceCliente].cuit); // Me imprimo los datos del cliente.
+				aviso_imprimirAvisoActivoPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, pArrayCliente[indiceCliente].idCliente); // Llamo a la función que imprime SOLO AVISOS ACTIVOS por ID del cliente.
 				printf("\n##########################################\n\n");
 			}
 		}
