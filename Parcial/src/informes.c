@@ -65,8 +65,9 @@ int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCli
 * \param limiteCliente, recibe el limite de los clientes
 * \param pArrayAviso, recibe el array de avisos
 * \param limiteAviso, recibe el limite de los avisos
- * return (-1) ERROR / 0 OK
- */
+* \param estadoAviso, recibe el estado (ACTIVO/PAUSADO)
+* \return (-1) ERROR / 0 OK
+*/
 int informes_calcularClienteConMasAvisosPorEstado (Cliente * pArrayCliente, int limiteCliente, Aviso * pArrayAviso, int limiteAviso, int estadoAviso)
 {
 	int retorno = -1;
@@ -99,11 +100,11 @@ int informes_calcularClienteConMasAvisosPorEstado (Cliente * pArrayCliente, int 
 		}
 		if(estadoAviso == AVISO_ACTIVO) // Si el estado del aviso está activo...
 		{
-			sprintf(strEstado,"Activos"); // Cargo la cadena strEstado con "Activo".
+			sprintf(strEstado,"Activos"); // Cargo la cadena strEstado con "Activos".
 		}
 		else if (estadoAviso == AVISO_PAUSADO) // En cambio si el estado del aviso está pausado...
 		{
-			sprintf(strEstado,"Pausados"); // Cargo la cadena strEstado con "Pausado".
+			sprintf(strEstado,"Pausados"); // Cargo la cadena strEstado con "Pausados".
 		}
 		printf("\nEl cliente con más avisos %s es %s %s, con %d avisos", strEstado, auxCliente.nombre, auxCliente.apellido, maximaCantidadAvisosPorEstado); // Imprimo los campos correspondientes de mi variable auxiliar auxCliente, junto con el nuevo máximo.
 		retorno = 0;
@@ -158,7 +159,7 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 		// Inicializo el array de rubros en 0.
 		for (int indiceRubros = 1 ; indiceRubros < 1000 ; indiceRubros++)
 		{
-			rubros[indiceRubros] = 0;
+			rubros[indiceRubros] = 0; // Lo inicializo en 0 para luego contar
 		}
 
 
