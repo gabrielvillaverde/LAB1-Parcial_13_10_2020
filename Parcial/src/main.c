@@ -34,16 +34,16 @@ int main(void) {
 	cliente_init(arrayCliente, QTY_CLIENTES); // Inicializo el array de clientes con todos los valores de isEmpty en TRUE, es decir, todo el array está vacío.
 	aviso_init(arrayAviso, QTY_AVISOS); // Inicializo el array de avisos con todos los valores de isEmpty en TRUE, es decir, todo el array está vacío.
 
-	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Lionel", "Messi", "20-38428752-9");
+	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Lio", "Messi", "20-38428752-9");
 	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Gabriel", "Villaverde", "20-39493486-9");
-	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Huevo", "Diaz", "20-38542751-9");
-	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Facundo", "Colavini", "20-37472450-9");
+	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Jorge", "Mendez", "20-38542751-9");
+	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Facundo", "Gonzalez", "20-37472450-9");
 
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 50, "Busco empleados para mi negocio.", 1, AVISO_ACTIVO);
-	aviso_altaForzada(arrayAviso, QTY_AVISOS, 900, "Necesito clases particulares de cocina.", 1, AVISO_PAUSADO);
-	aviso_altaForzada(arrayAviso, QTY_AVISOS, 60, "Necesito mecánico para mi coche.", 2, AVISO_ACTIVO);
+	aviso_altaForzada(arrayAviso, QTY_AVISOS, 900, "Doy clases de fútbol.", 1, AVISO_PAUSADO);
+	aviso_altaForzada(arrayAviso, QTY_AVISOS, 60, "Compro casa.", 2, AVISO_ACTIVO);
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 70, "Compro muebles.", 3, AVISO_ACTIVO);
-	aviso_altaForzada(arrayAviso, QTY_AVISOS, 80, "Urgente: Se solicita niñera.", 4, AVISO_PAUSADO);
+	aviso_altaForzada(arrayAviso, QTY_AVISOS, 80, "Urgente: Se solicita personal médico.", 4, AVISO_PAUSADO);
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 80, "Urgente: Se buscan jugadores de fútbol.", 4, AVISO_PAUSADO);
 
 	do

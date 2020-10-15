@@ -37,7 +37,7 @@ int clienteAviso_baja (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCli
 			{
 				if(utn_getNumberInt("\n¿Desea borrar este cliente junto con todas sus publicaciones? [1 - SI] - [2 - NO]\n", "Error, ingrese: [1 - SI] - [2 - NO].\n", &opcionDeEliminar, 2, 1, 2) == 0) // Llamo a la función que obtiene un número y lo guardo en opcionDeEliminar.
 				{
-					if(opcionDeEliminar == 1) // Si la opción de eliminar es == 1, es porque quiere borrar. Podría poner if(opcionDeEliminar) para evitar el Modo Disney!
+					if(opcionDeEliminar == 1) // Si la opción de eliminar es == 1, es porque quiere borrar.
 					{
 							aviso_borrarPorId(pArrayAviso, limiteAviso, idABorrar); // Llamo a la función para borrar el aviso por ID del cliente, ya que lo recibo desde idABorrar.
 							pArrayCliente[indiceABorrar].isEmpty = TRUE; // Indico que el elemento de esa posición del array de clientes está vacío.

@@ -58,17 +58,54 @@ int aviso_init (Aviso * pArrayAviso, int limiteAviso)
 int aviso_alta (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int * indiceAvisos)
 {
 	int retorno = -1;
-	int indice;
+	int indiceAviso;
+	int indiceCliente;
 
-	Aviso bufferAviso; // Me creo una variable auxiliar del tipo Aviso.
+	Aviso bufferAviso; // Me creo una variable auxiliar llamada bufferAviso del tipo Aviso.
 
 	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0) // Verifico lo que recibo como parámetro.
 	{
+		// Llamo a la función que busca un índice libre en el array de avisos y lo devuelvo por referencia (&indiceAviso).
+		if (aviso_buscarLibreRef (pArrayAviso, limiteAviso, &indiceAviso) == 0) // Si encontré un lugar libre en mi array de avisos...
+		{
+			// Le solicito los datos al usuario y los guardo en cada campo del auxiliar bufferAviso.
+			if (utn_getNumberInt("\nIngrese el ID del cliente:\n", "\nError, intente nuevamente.\n", &bufferAviso.idCliente, 2, 0, 9999) == 0 &&
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, bufferAviso.idCliente, &indiceCliente) != -1 && // Si la función de buscar un índice por ID me devuelve algo distinto a -1, es porque encontró un ID de algún cliente ya cargado y puede cargar el aviso.
+				utn_getNumberInt("\nIngrese el número de rubro:\n", "\nError, ingrese un número de rubro válido entre 0 y 9999.\n",&bufferAviso.numeroDeRubro, 2, 0, 9999) == 0 &&
+				utn_getAlphaNum("\nIngrese el texto del aviso:\n", "\nError, ingrese un texto válido de máximo 64 caracteres:\n", bufferAviso.textoDelAviso, 2, SIZE_TEXTO_AVISO) == 0)
+			{
+				pArrayAviso[*indiceAvisos] = bufferAviso; // Guardo en el índice de avisos lo que contiene la variable auxiliar bufferAviso.
+				pArrayAviso[*indiceAvisos].idAviso = aviso_generarNuevoId(); // Genero un nuevo ID de aviso.
+				pArrayAviso[*indiceAvisos].isEmpty = FALSE; // Indico que ese índice de mi array de avisos ya no está vacío.
+				pArrayAviso[*indiceAvisos].estado = AVISO_ACTIVO; // Lo cargo como un aviso activo ya que así lo pide la consigna.
+				printf("\nEl ID generado para este aviso es el: %d\n", pArrayAviso[*indiceAvisos].idAviso);
+				*indiceAvisos = *indiceAvisos + 1; // Aumento el contador del índice de avisos en 1 y retorno por valor de referencia.
+				retorno = 0;
+			}
+			else
+			{
+				printf("\nError, ese ID no existe.\n"); // Muestra este mensaje si la función de buscarIndicePorId devuelve un -1, es decir, no existe el índice que se corresponde al ID ingresado.
+			}
+		}
+	}
+	return retorno;
+}
+
+/*int aviso_alta (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int * indiceAvisos)
+{
+	int retorno = -1;
+	int indice;
+
+	Aviso bufferAviso; // Me creo una variable auxiliar llamada bufferAviso del tipo Aviso.
+
+	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0) // Verifico lo que recibo como parámetro.
+	{
+		// Llamo a la función que busca un índice libre en el array de avisos y lo devuelvo por referencia (&indice).
 		if (aviso_buscarLibreRef (pArrayAviso, limiteAviso, &indice) == 0) // Si encontré un lugar libre en mi array de avisos...
 		{
 			// Le solicito los datos al usuario y los guardo en cada campo del auxiliar bufferAviso.
 			if (utn_getNumberInt("\nIngrese el ID del cliente:\n", "\nError, intente nuevamente.\n", &bufferAviso.idCliente, 2, 0, 9999) == 0 &&
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, bufferAviso.idCliente, &indice) != -1 && // Si la función de buscar un índice por ID me devuelve algo distinto a -1, es porque encontró un ID.
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, bufferAviso.idCliente, &indice) != -1 && // Si la función de buscar un índice por ID me devuelve algo distinto a -1, es porque encontró un ID de algún cliente y puede cargar el aviso.
 				utn_getNumberInt("\nIngrese el número de rubro:\n", "\nError, ingrese un número de rubro válido entre 0 y 9999.\n",&bufferAviso.numeroDeRubro, 2, 0, 9999) == 0 &&
 				utn_getAlphaNum("\nIngrese el texto del aviso:\n", "\nError, ingrese un texto válido de máximo 64 caracteres:\n", bufferAviso.textoDelAviso, 2, SIZE_TEXTO_AVISO) == 0)
 			{
@@ -87,7 +124,7 @@ int aviso_alta (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, i
 		}
 	}
 	return retorno;
-}
+}*/
 
 /**
 * Función de hardcode. Obligo a mi programa a que inicialice con valores cargados por mí previamente.
@@ -132,15 +169,15 @@ int aviso_pausar (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente,
 	int indiceAPausar;
 	int opcionDePausar;
 
-	if (pArrayAviso != NULL && limiteAviso > 0)
+	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
 	{
 		printf("\nEstos son los avisos activos de todos los clientes:\n");
-		aviso_imprimirPorEstado(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, AVISO_ACTIVO); // Llamo a la función que imprime avisos por estado, en este caso PAUSADO.
+		aviso_imprimirPorEstado(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, AVISO_ACTIVO); // Llamo a la función que imprime avisos de TODOS los clientes por estado, en este caso PAUSADO.
 		if(	utn_getNumberInt("\nIngrese el ID del aviso que quiere pausar:\n","\nError, ID inválido.\n",&idAvisoAPausar,2,0,9999) == 0 &&
 			aviso_buscarIndicePorId(pArrayAviso,limiteAviso,idAvisoAPausar,&indiceAPausar) != -1) // Si me devuelve algo distinto a -1, es porque valido correctamente y el ID correspondiente a ese índice existe.
 		{
 			printf("\nEstos son los datos del cliente al que corresponde ese aviso:.\n");
-			if(aviso_imprimirPorId(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idAvisoAPausar) == 0) // Le muestro los datos del cliente al que corresponden ese aviso llamando a la función que imprime los avisos por ID.
+			if(aviso_imprimirPorIdAviso(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idAvisoAPausar) == 0) // Le muestro los datos del cliente al que corresponden ese aviso llamando a la función que imprime los avisos por el ID del aviso que quiero pausar.
 			{
 				if(utn_getNumberInt("\n¿Desea pausar esta publicación? [1 - SI] - [2 - NO]\n", "Error, ingrese: [1 - SI] - [2 - NO].\n", &opcionDePausar, 2, 1, 2) == 0)
 				{
@@ -190,7 +227,7 @@ int aviso_activar (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente
 			if(pArrayAviso[indiceActivar].estado == AVISO_PAUSADO) // Si el estado del índice que quiero activar está pausado...
 			{
 				printf("\nEstos son los datos del cliente al que corresponde ese aviso:\n");
-				if(aviso_imprimirPorId(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idAvisoActivar) == 0) // Le muestro los datos del cliente al que corresponden ese aviso llamando a la función que imprime los avisos por ID.
+				if(aviso_imprimirPorIdAviso(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, idAvisoActivar) == 0) // Le muestro los datos del cliente al que corresponden ese aviso llamando a la función que imprime los avisos por ID del aviso.
 				{
 					if(utn_getNumberInt("\n¿Desea activar esta publicación? [1 - SI] - [2 - NO]\n", "Error, ingrese: [1 - SI] - [2 - NO].\n", &opcionDeActivar, 2, 1, 2) == 0)
 					{
@@ -240,7 +277,7 @@ int aviso_imprimir (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayClient
 				{
 					sprintf(strEstado,"Activo"); // Cargo la cadena strEstado con "Activo".
 				}
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente.
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente, y retorna ese índice de cliente por valor de referencia.
 				printf("\nID del cliente: %d - ID del aviso: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s - Número de rubro: %d - Texto del aviso: %s - Estado del aviso: %s", pArrayCliente[indiceCliente].idCliente, pArrayAviso[i].idAviso, pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente].apellido, pArrayCliente[indiceCliente].cuit, pArrayAviso[i].numeroDeRubro, pArrayAviso[i].textoDelAviso, strEstado);
 			}
 		}
@@ -250,7 +287,7 @@ int aviso_imprimir (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayClient
 }
 
 /**
-* Función que imprime los avisos por ID.
+* Función que imprime los avisos por ID del aviso.
 * \param pArrayAviso, recibe el array de avisos.
 * \param limiteAviso, recibe el limite de los avisos.
 * \param pArrayCliente, recibe el array de clientes.
@@ -258,7 +295,7 @@ int aviso_imprimir (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayClient
 * \param idAviso, recibe el ID del aviso.
 * \return (-1) ERROR / 0 OK
 */
-int aviso_imprimirPorId (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idAviso)
+int aviso_imprimirPorIdAviso (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idAviso)
 {
 	int retorno = -1;
 	int indiceCliente;
@@ -269,7 +306,7 @@ int aviso_imprimirPorId (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayC
 		{
 			if(pArrayAviso[i].idAviso == idAviso) // Si la posición i de mi array de avisos en el campo idAviso coincide el ID del aviso indicado.
 			{
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente.
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente, y retorna su índice por valor de referencia.
 				printf("\nID del cliente: %d - ID del aviso: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s - Número de rubro: %d - Texto del aviso: %s", pArrayCliente[indiceCliente].idCliente, pArrayAviso[i].idAviso, pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente].apellido, pArrayCliente[indiceCliente].cuit, pArrayAviso[i].numeroDeRubro, pArrayAviso[i].textoDelAviso);
 			}
 		}
@@ -292,19 +329,19 @@ int aviso_imprimirAvisoActivoPorIdCliente (Aviso * pArrayAviso, int limiteAviso,
 	int retorno = -1;
 	int indiceCliente;
 	int contadorAvisosActivos = 0;
-	char strEstado[10]; // Me declaro esta variable para luego copiar "Activo"en strEstado.
+	char strEstado[10]; // Me declaro esta variable para luego copiar "Activo" en strEstado.
 
 	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
 	{
 		for(int i = 0 ; i < limiteAviso ; i++) // Recorro el array de avisos.
 		{
-			if(pArrayAviso[i].idCliente == idCliente) // Si la posición i de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
+			if(pArrayAviso[i].idCliente == idCliente) // Si el índice de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
 			{
-				if(pArrayAviso[i].estado == AVISO_ACTIVO) // Si el estado del aviso está activo...
+				if(pArrayAviso[i].estado == AVISO_ACTIVO) // ... y si además el estado del aviso está activo...
 				{
 					sprintf(strEstado,"Activo"); // Cargo la cadena strEstado con "Activo".
 					contadorAvisosActivos++; // Y aumento el contador de avisos activos.
-					cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente.
+					cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por el ID del cliente al que corresponde ese aviso, y devuelve el índice de ese cliente por valor de referencia.
 					printf("\nNúmero de rubro: %d - Texto del aviso: %s - Estado: %s\n", pArrayAviso[i].numeroDeRubro, pArrayAviso[i].textoDelAviso, strEstado); // Imprimo
 				}
 			}
@@ -335,9 +372,9 @@ int aviso_imprimirTodosLosAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAvi
 
 		for(int i = 0 ; i < limiteAviso ; i++) // Recorro el array de avisos.
 		{
-			if(pArrayAviso[i].idCliente == idCliente) // Si la posición i de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
+			if(pArrayAviso[i].idCliente == idCliente) // Si el índice de mi array de avisos en el campo idCliente coincide el ID del cliente indicado...
 			{
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por ID del cliente.
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca en mi array de clientes el índice por el ID del cliente al que corresponde ese aviso, y devuelve el índice de ese cliente por valor de referencia.
 				if(pArrayAviso[i].estado == AVISO_ACTIVO) // Si el estado del aviso está activo...
 				{
 					sprintf(strEstado,"Activo"); // Cargo la cadena strEstado con "Activo".
@@ -397,11 +434,11 @@ int aviso_imprimirPorEstado (Aviso * pArrayAviso, int limiteAviso, Cliente * pAr
 
 	if (pArrayAviso != NULL && limiteAviso > 0 && pArrayCliente != NULL && limiteCliente > 0)
 	{
-		for(int i ; i < limiteAviso ; i++)
+		for(int i ; i < limiteAviso ; i++) // Recorro el array de avisos
 		{
-			if(pArrayAviso[i].estado == estadoAviso && pArrayAviso[i].isEmpty == FALSE)
+			if(pArrayAviso[i].estado == estadoAviso && pArrayAviso[i].isEmpty == FALSE) // Chequeo que el estado de ese índice sea lo que recibe estadoAviso (PAUSADO/ACTIVO) y que además ese índice esté cargado.
 			{
-				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente);
+				cliente_buscarIndicePorId(pArrayCliente, limiteCliente, pArrayAviso[i].idCliente, &indiceCliente); // Llamo a la función que busca un índice de cliente por ID y devuelve por valor de referencia el índice de dicho cliente.
 				if(pArrayAviso[i].estado == AVISO_PAUSADO)
 				{
 					sprintf(strEstado,"Pausado"); // Cargo la cadena strEstado con "Pausado".
@@ -411,6 +448,7 @@ int aviso_imprimirPorEstado (Aviso * pArrayAviso, int limiteAviso, Cliente * pAr
 					sprintf(strEstado,"Activo"); // Cargo la cadena strEstado con "Pausado".
 
 				}
+				// Imprimo los datos del cliente y su aviso
 				printf("\nID del cliente: %d - ID del aviso: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s - Número de rubro: %d - Texto del aviso: %s - Estado del aviso: %s\n", pArrayCliente[indiceCliente].idCliente, pArrayAviso[i].idAviso, pArrayCliente[indiceCliente].nombre, pArrayCliente[indiceCliente].apellido, pArrayCliente[indiceCliente].cuit, pArrayAviso[i].numeroDeRubro, pArrayAviso[i].textoDelAviso, strEstado);
 			}
 		}

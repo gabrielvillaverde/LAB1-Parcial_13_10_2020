@@ -42,9 +42,9 @@ int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCli
 				buffer = aviso_contarAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente, limiteCliente, pArrayCliente[i].idCliente); // Me guardo en buffer lo que devuelve la función de contar avisos por ID
 				if(flag == FALSE)
 				{
-					flag = TRUE;
 					nuevoMaximo = buffer; // Indico que el nuevo máximo es lo que guarda la variable buffer, que obtuvo de contar avisos por ID del cliente.
 					auxCliente = pArrayCliente[i]; // Le asigno a mi variable auxiliar el valor de la posición i del array de clientes.
+					flag = TRUE;
 				}
 				else if(buffer > nuevoMaximo) // Ahora, si lo que obtiene buffer es mayor al máximo existente...
 				{
@@ -108,18 +108,22 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 			rubros[indiceRubros] = 0;
 		}
 
+
+
 		// Recorro el array de avisos
 		for (int indiceAviso = 0 ; indiceAviso < limiteAviso ; indiceAviso++)
 		{
-			if(pArrayAviso[indiceAviso].isEmpty == FALSE) // Si el índice está vacío...
+			if(pArrayAviso[indiceAviso].isEmpty == FALSE) // Si el índice en el array de avisos no está vacío...
 			{
 				// El rubro del aviso actual va a ser el índice del array de rubros
 				// En la posicion de ese rubro contabilizo la cantidad de ocurrencias
 				int numeroRubro = pArrayAviso[indiceAviso].numeroDeRubro; // Cada número de rubro que encuentro mientras recorro el array de avisos, lo tomo como índice.
-				rubros[numeroRubro]++; // Aumenta el contador de ese número de rubro
+				rubros[numeroRubro]++; // Aumenta el contador
 			}
 		}
 		// Termino de recorrer el array de avisos
+
+
 
 		// Calculo el máximo recorriendo el array de rubros
 		for (int indiceRubros = 1 ; indiceRubros < SIZE_RUBROS ; indiceRubros++)

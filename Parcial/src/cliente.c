@@ -56,7 +56,8 @@ int cliente_alta (Cliente * pArrayCliente, int limiteCliente)
 	int retorno = -1;
 	int indice;
 
-	Cliente bufferCliente; // Creo una variable auxiliar del tipo de dato Cliente, para cargar los datos que obtendré más abajo ahí.
+	Cliente bufferCliente; // Creo una variable auxiliar del tipo de dato Cliente, para cargar los datos que obtendré más abajo y guardarlos en bufferCliente.
+
 	if (pArrayCliente != NULL && limiteCliente > 0)
 	{
 		if (cliente_buscarLibreRef (pArrayCliente, limiteCliente, &indice) == 0) // Si encontré un lugar libre en el array de clientes...
@@ -67,7 +68,7 @@ int cliente_alta (Cliente * pArrayCliente, int limiteCliente)
 			{	// Si obtuve los datos...
 				pArrayCliente[indice] = bufferCliente; // DEEP COPY: Asigno los valores de bufferCliente en la posición del índice correspondiente.
 				pArrayCliente[indice].idCliente = cliente_generarNuevoId(); // Genero un nuevo ID correspondiente a ese índice.
-				printf("\nEl ID generado para este cliente es el: %d\n",pArrayCliente[indice].idCliente); // Muestro por consola el ID que se generó para ese cliente.
+				printf("\nEl ID generado para este cliente es el: %d\n", pArrayCliente[indice].idCliente); // Muestro por consola el ID que se generó para ese cliente.
 				pArrayCliente[indice].isEmpty = FALSE; // Indico que dicha posición ya no está vacía.
 				printf("\nSe ha cargado el cliente correctamente.\n");
 				retorno = 0;
@@ -162,9 +163,9 @@ int cliente_modificar (Cliente * pArrayCliente, int limiteCliente)
 
 		if(utn_getNumberInt("\nIngrese el ID del cliente que desea modificar:\n","\nError.\n",&idBuscado,2,0,9999) == 0) // Llamo a la función que obtiene un número para guardarme el ID en idBuscado.
 		{
-			if(cliente_buscarIndicePorId(pArrayCliente, limiteCliente,idBuscado,&indiceAModificar) == 0) // Llamo a la función que busca el índice a modificar por ID.
+			if(cliente_buscarIndicePorId(pArrayCliente, limiteCliente,idBuscado,&indiceAModificar) == 0) // Llamo a la función que busca el índice a modificar por ID. Recibe el ID buscado que obtuvo la función getNumberInt y devuelve el índice por valor de referencia.
 			{
-				bufferCliente = pArrayCliente[indiceAModificar]; // Me guardo en mi variable auxiliar el índice que voy a modificar.
+				bufferCliente = pArrayCliente[indiceAModificar]; // Me guardo en mi variable auxiliar bufferCliente el índice que voy a modificar del array de clientes.
 
 				if (utn_getName("\nIngrese el nuevo nombre:\n", "Error, ingrese un nombre válido:\n", bufferCliente.nombre, 2, SIZE_NOMBRE) == 0 && // Le pido los datos al usuario y los voy guardando en bufferCliente.
 					utn_getName("\nIngrese el nuevo apellido:\n", "Error, ingrese un apellido válido.\n", bufferCliente.apellido, 2, SIZE_APELLIDO) == 0 &&
@@ -198,7 +199,7 @@ int cliente_imprimir (Cliente * pArrayCliente , int limiteCliente)
 	{
 		for (int i = 0 ; i < limiteCliente ; i++) // Recorro el array de clientes
 		{
-			if(pArrayCliente[i].isEmpty == FALSE) // Si la posición "i" del array de clientes NO está vacía.
+			if(pArrayCliente[i].isEmpty == FALSE) // Si la posición "i" del array de clientes NO está vacía...
 			{
 				// Estoy en condiciones de poder imprimir cada elemento del tipo de dato Cliente.
 				printf("\nID: %d - Nombre del cliente: %s - Apellido del cliente: %s - CUIT: %s\n",pArrayCliente[i].idCliente,pArrayCliente[i].nombre, pArrayCliente[i].apellido, pArrayCliente[i].cuit);
@@ -272,7 +273,7 @@ int cliente_buscarLibreRef (Cliente * pArrayCliente, int limiteCliente, int * pI
 int cliente_buscarIndicePorId (Cliente * pArrayCliente, int limiteCliente, int idBuscado, int * pIndice)
 {
 	int retorno = -1;
-	int i ;
+	int i;
 
 	if (pArrayCliente != NULL && limiteCliente > 0 && pIndice != NULL && idBuscado >= 0)
 	{
