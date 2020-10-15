@@ -27,33 +27,33 @@
 int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCliente, Aviso * pArrayAviso, int limiteAviso)
 {
 	int retorno = -1;
-	int buffer;
-	int nuevoMaximo;
+	int cantidadAvisosPorIdCliente;
+	int maximaCantidadAvisos;
 	int flag = FALSE;
 
 	Cliente auxCliente;
 
-	if (pArrayCliente != NULL && limiteCliente > 0)
+	if (pArrayCliente != NULL && limiteCliente > 0 && pArrayAviso != NULL && limiteAviso > 0)
 	{
-		for (int i = 0 ; i < limiteCliente ; i++)
+		for (int i = 0 ; i < limiteCliente ; i++) // Recorro el array de clientes...
 		{
-			if(pArrayCliente[i].isEmpty == FALSE) // Si la posición "i" del array de clientes NO está vacía...
+			if(pArrayCliente[i].isEmpty == FALSE) // Si el índice del array de clientes NO está vacío...
 			{
-				buffer = aviso_contarAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente[i].idCliente); // Me guardo en buffer lo que devuelve la función de contar avisos por ID
+				cantidadAvisosPorIdCliente = aviso_contarAvisosPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente[i].idCliente); // Me guardo en la variable auxiliar lo que devuelve la función de contar avisos por ID de cliente.
 				if(flag == FALSE)
 				{
-					nuevoMaximo = buffer; // Indico que el nuevo máximo es lo que guarda la variable buffer, que obtuvo de contar avisos por ID del cliente.
-					auxCliente = pArrayCliente[i]; // Le asigno a mi variable auxiliar el valor de la posición i del array de clientes.
-					flag = TRUE;
+					maximaCantidadAvisos = cantidadAvisosPorIdCliente; // Indico que la máxima cantidad de avisos es lo que guarda la variable auxiliar, que obtuvo de contar avisos por ID del cliente.
+					auxCliente = pArrayCliente[i]; // Le asigno a mi otra variable auxiliar el índice del array de clientes.
+					flag = TRUE; // Levanto la bandera.
 				}
-				else if(buffer > nuevoMaximo) // Ahora, si lo que obtiene buffer es mayor al máximo existente...
+				else if(cantidadAvisosPorIdCliente > maximaCantidadAvisos) // Ahora, si en la próxima iteración cantidadAvisosPorIdCliente es mayor a la máxima cantidad de avisos existente...
 				{
-					nuevoMaximo = buffer; // Guardo en mi variable nuevoMaximo el valor de buffer.
-					auxCliente = pArrayCliente[i]; // Le asigno a mi variable auxiliar el valor de la posición i del array de clientes.
+					maximaCantidadAvisos = cantidadAvisosPorIdCliente; // Guardo en mi variable maximaCantidadAvisos el valor de cantidadAvisosPorIdCliente.
+					auxCliente = pArrayCliente[i]; // Le asigno a mi otra variable auxiliar el índice del array de clientes.
 				}
 			}
 		}
-		printf("\nEl cliente con más avisos es %s %s, con %d avisos", auxCliente.nombre, auxCliente.apellido, nuevoMaximo); // Imprimo los campos correspondientes de mi variable auxiliar auxCliente, junto con el nuevo máximo.
+		printf("\nEl cliente con más avisos es %s %s, con %d avisos", auxCliente.nombre, auxCliente.apellido, maximaCantidadAvisos); // Imprimo los campos correspondientes de mi variable auxiliar auxCliente, junto con el nuevo máximo.
 		retorno = 0;
 	}
 	return retorno;
@@ -72,11 +72,11 @@ int informes_calcularCantidadDeAvisosPausados (Aviso * pArrayAviso, int limiteAv
 
 	if (pArrayAviso != NULL && limiteAviso > 0)
 	{
-		for (int i = 0 ; i < limiteAviso ; i++)
+		for (int i = 0 ; i < limiteAviso ; i++) // Recorro el array de avisos
 		{
-			if(pArrayAviso[i].isEmpty == FALSE && pArrayAviso[i].estado == AVISO_PAUSADO)
+			if(pArrayAviso[i].isEmpty == FALSE && pArrayAviso[i].estado == AVISO_PAUSADO) // Si el índice del array de avisos no está vacío y además su estado es pausado...
 			{
-				contadorAvisosPausados++;
+				contadorAvisosPausados++; // Aumento el contador de avisos pausados.
 			}
 		}
 		printf("\nLa cantidad de avisos pausados es: %d", contadorAvisosPausados);
@@ -97,13 +97,13 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 	int retorno = -1;
 	int rubros[SIZE_RUBROS]; // Declaro un array de rubros máximos
 	int flag = FALSE;
-	int nuevoMaximoCantidadDeOcurrencias;
+	int maximaCantidadDeOcurrencias;
 	int rubroConMasAvisos;
 
 	if (pArrayAviso != NULL && limiteAviso > 0)
 	{
 		// Inicializo el array de rubros en 0.
-		for (int indiceRubros = 1; indiceRubros < 1000; indiceRubros++)
+		for (int indiceRubros = 1 ; indiceRubros < 1000 ; indiceRubros++)
 		{
 			rubros[indiceRubros] = 0;
 		}
@@ -130,20 +130,20 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 		{
 			if(flag == FALSE) // Si la bandera está en FALSE...
 			{
-				nuevoMaximoCantidadDeOcurrencias = rubros[indiceRubros]; // Entro al if e indico que en el array de rubros el nuevo máximo es indiceRubros.
+				maximaCantidadDeOcurrencias = rubros[indiceRubros]; // Entro al if e indico que el máximo es indiceRubros.
 				rubroConMasAvisos = indiceRubros; // Indico que el rubro con más avisos es la posición indiceRubros.
 				flag = TRUE; // Levanto la flag.
 			}
-			if(rubros[indiceRubros] > nuevoMaximoCantidadDeOcurrencias) // Si en el array de rubros, el indiceRubros es mayor al nuevoMaximo que tenía anteriormente...
+			if(rubros[indiceRubros] > maximaCantidadDeOcurrencias) // Si en el array de rubros, el indiceRubros es mayor al nuevoMaximo que tenía anteriormente...
 			{
 				flag = TRUE;
-				nuevoMaximoCantidadDeOcurrencias = rubros[indiceRubros]; // Le asigno a mi nuevo máximo el valor que tiene rubros[indiceRubros]
+				maximaCantidadDeOcurrencias = rubros[indiceRubros]; // Le asigno a la máxima cantidad de ocurrencias el valor que tiene rubros[indiceRubros]
 				rubroConMasAvisos = indiceRubros; // Indico que el rubro con más avisos es la posición indiceRubros.
 			}
 		}
-		//Termino de recorrer el array de rubros
+		// Termino de recorrer el array de rubros
 		retorno = 0;
-		printf("\nEl rubro con más avisos es %d con una cantidad de: %d \n", rubroConMasAvisos, nuevoMaximoCantidadDeOcurrencias);
+		printf("\nEl rubro con más avisos es %d con una cantidad de: %d \n", rubroConMasAvisos, maximaCantidadDeOcurrencias);
 	}
 	return retorno;
 }
