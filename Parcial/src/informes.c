@@ -60,6 +60,59 @@ int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCli
 }
 
 /**
+* Función que calcula el cliente con más avisos POR ESTADO
+* \param pArrayCliente, recibe el array de clientes
+* \param limiteCliente, recibe el limite de los clientes
+* \param pArrayAviso, recibe el array de avisos
+* \param limiteAviso, recibe el limite de los avisos
+ * return (-1) ERROR / 0 OK
+ */
+int informes_calcularClienteConMasAvisosPorEstado (Cliente * pArrayCliente, int limiteCliente, Aviso * pArrayAviso, int limiteAviso, int estadoAviso)
+{
+	int retorno = -1;
+	int cantidadAvisosPorEstadoPorIdCliente;
+	int maximaCantidadAvisosPorEstado;
+	int flag = FALSE;
+	char strEstado[10];
+
+	Cliente auxCliente;
+
+	if (pArrayCliente != NULL && limiteCliente > 0 && pArrayAviso != NULL && limiteAviso > 0)
+	{
+		for (int i = 0 ; i < limiteCliente ; i++) // Recorro el array de clientes...
+		{
+			if(pArrayCliente[i].isEmpty == FALSE) // Si el índice del array de clientes NO está vacío...
+			{
+				cantidadAvisosPorEstadoPorIdCliente = aviso_contarAvisosPorEstadoPorIdCliente(pArrayAviso, limiteAviso, pArrayCliente[i].idCliente, estadoAviso); // Me guardo en la variable auxiliar lo que devuelve la función de contar avisos por estado por ID de cliente.
+				if(flag == FALSE)
+				{
+					maximaCantidadAvisosPorEstado = cantidadAvisosPorEstadoPorIdCliente; // Indico que la máxima cantidad de avisos es lo que guarda la variable auxiliar, que obtuvo de contar avisos por ID del cliente.
+					auxCliente = pArrayCliente[i]; // Le asigno a mi otra variable auxiliar el índice del array de clientes.
+					flag = TRUE; // Levanto la bandera.
+				}
+				else if(cantidadAvisosPorEstadoPorIdCliente > maximaCantidadAvisosPorEstado) // Ahora, si en la próxima iteración cantidadAvisosPorIdCliente es mayor a la máxima cantidad de avisos existente...
+				{
+					maximaCantidadAvisosPorEstado = cantidadAvisosPorEstadoPorIdCliente; // Guardo en mi variable maximaCantidadAvisos el valor de cantidadAvisosPorIdCliente.
+					auxCliente = pArrayCliente[i]; // Le asigno a mi otra variable auxiliar el índice del array de clientes.
+				}
+			}
+		}
+		if(estadoAviso == AVISO_ACTIVO) // Si el estado del aviso está activo...
+		{
+			sprintf(strEstado,"Activos"); // Cargo la cadena strEstado con "Activo".
+		}
+		else if (estadoAviso == AVISO_PAUSADO) // En cambio si el estado del aviso está pausado...
+		{
+			sprintf(strEstado,"Pausados"); // Cargo la cadena strEstado con "Pausado".
+		}
+		printf("\nEl cliente con más avisos %s es %s %s, con %d avisos", strEstado, auxCliente.nombre, auxCliente.apellido, maximaCantidadAvisosPorEstado); // Imprimo los campos correspondientes de mi variable auxiliar auxCliente, junto con el nuevo máximo.
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+/**
 * Función que calcula la cantidad de avisos pausados
 * \param pArrayAviso, recibe el array de avisos
 * \param limiteAviso, recibe el limite de los avisos
@@ -147,3 +200,5 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 	}
 	return retorno;
 }
+
+

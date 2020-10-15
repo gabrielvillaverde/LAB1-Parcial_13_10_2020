@@ -12,7 +12,9 @@
 #include "aviso.h"
 
 int informes_calcularClienteConMasAvisos (Cliente * pArrayCliente, int limiteCliente, Aviso * pArrayAviso, int limiteAviso);
+int informes_calcularClienteConMasAvisosPorEstado (Cliente * pArrayCliente, int limiteCliente, Aviso * pArrayAviso, int limiteAviso, int estadoAviso);
 int informes_calcularCantidadDeAvisosPausados (Aviso * pArrayAviso, int limiteAviso);
 int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso);
+
 
 #endif /* INFORMES_H_ */

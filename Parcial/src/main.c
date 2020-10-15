@@ -40,7 +40,7 @@ int main(void) {
 	cliente_altaForzada(arrayCliente, QTY_CLIENTES, "Facundo", "Gonzalez", "20-37472450-9");
 
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 50, "Busco empleados para mi negocio.", 1, AVISO_ACTIVO);
-	aviso_altaForzada(arrayAviso, QTY_AVISOS, 900, "Doy clases de fútbol.", 1, AVISO_PAUSADO);
+	aviso_altaForzada(arrayAviso, QTY_AVISOS, 900, "Doy clases de fútbol.", 1, AVISO_ACTIVO);
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 60, "Compro casa.", 2, AVISO_ACTIVO);
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 70, "Compro muebles.", 3, AVISO_ACTIVO);
 	aviso_altaForzada(arrayAviso, QTY_AVISOS, 80, "Urgente: Se solicita personal médico.", 4, AVISO_PAUSADO);
@@ -110,7 +110,7 @@ int main(void) {
 			case 8:
 				do
 				{
-				if(utn_getNumberInt("\nUsted está en el submenú de informes, seleccione una opción: \n\n1 - Cliente con más avisos.\n2 - Cantidad de avisos pausados.\n3 - Rubro con más avisos.\n4 - Salir del submenú de informes.\n", "\nError. Seleccione una opción válida (1-4)\n", &opcionSubMenu, 2, 1, 4) == 0)
+				if(utn_getNumberInt("\nUsted está en el submenú de informes, seleccione una opción: \n\n1 - Cliente con más avisos.\n2 - Cantidad de avisos pausados.\n3 - Rubro con más avisos.\n4 - Cliente con más avisos activos.\n5 - Cliente con más avisos pausados\n6 - Salir del menú.\n", "\nError. Seleccione una opción válida (1-5)\n", &opcionSubMenu, 2, 1, 6) == 0)
 					{
 						switch(opcionSubMenu)
 						{
@@ -126,9 +126,17 @@ int main(void) {
 							printf("\nUsted quiere un informe del rubro con más avisos.\n");
 							informes_calcularRubroConMasAvisos(arrayAviso, QTY_AVISOS);
 							break;
+						case 4:
+							printf("\nUsted quiere un informe del cliente con más avisos activos.\n");
+							informes_calcularClienteConMasAvisosPorEstado (arrayCliente, QTY_CLIENTES, arrayAviso, QTY_AVISOS, AVISO_ACTIVO);
+							break;
+						case 5:
+							printf("\nUsted quiere un informe del cliente con más avisos pausados.\n");
+							informes_calcularClienteConMasAvisosPorEstado (arrayCliente, QTY_CLIENTES, arrayAviso, QTY_AVISOS, AVISO_PAUSADO);
+							break;
 						}
 					}
-				}while(opcionSubMenu != 4);
+				}while(opcionSubMenu != 6);
 				break;
 			}
 		}

@@ -40,6 +40,8 @@ int aviso_imprimirPorEstado (Aviso * pArrayAviso, int limiteAviso, Cliente * pAr
 int aviso_imprimirAvisoActivoPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idCliente);
 int aviso_imprimirTodosLosAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idCliente);
 int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int idCliente);
+int aviso_contarAvisosActivosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int idCliente, int estadoAviso);
+int aviso_contarAvisosPorEstadoPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int idCliente, int estadoAviso);
 int aviso_buscarLibre (Aviso * pArrayAviso, int limiteAviso);
 int aviso_buscarLibreRef (Aviso * pArrayAviso, int limiteAviso, int * pIndice);
 int aviso_buscarIndicePorId (Aviso * pArrayAviso, int limiteAviso, int idBuscado, int * pIndice);

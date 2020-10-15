@@ -426,6 +426,32 @@ int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int id
 * \param limiteCliente, recibe el limite de los clientes.
 * \param idCliente, recibe el ID del cliente.
 * \return (-1) ERROR / 0 OK
+*/
+int aviso_contarAvisosPorEstadoPorIdCliente (Aviso * pArrayAviso, int limiteAviso, int idCliente, int estadoAviso)
+{
+	int contadorAvisos = 0; // Hago un contador de avisos.
+
+	if (pArrayAviso != NULL && limiteAviso > 0)
+	{
+		for(int i = 0 ; i < limiteAviso ; i++) // Recorro mi array de avisos
+		{
+			if(pArrayAviso[i].idCliente == idCliente && pArrayAviso[i].estado == estadoAviso)
+			{
+				contadorAvisos++; // Aumento el contador de avisos.
+			}
+		}
+	}
+	return contadorAvisos;
+}
+
+/**
+* Función que cuenta la cantidad de avisos por ID del cliente.
+* \param pArrayAviso, recibe el array de avisos.
+* \param limiteAviso, recibe el limite de los avisos.
+* \param pArrayCliente, recibe el array de clientes.
+* \param limiteCliente, recibe el limite de los clientes.
+* \param idCliente, recibe el ID del cliente.
+* \return (-1) ERROR / 0 OK
 
 int aviso_contarAvisosPorIdCliente (Aviso * pArrayAviso, int limiteAviso, Cliente * pArrayCliente, int limiteCliente, int idCliente)
 {
