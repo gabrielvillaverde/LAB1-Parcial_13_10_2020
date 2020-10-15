@@ -100,11 +100,11 @@ int informes_calcularClienteConMasAvisosPorEstado (Cliente * pArrayCliente, int 
 		}
 		if(estadoAviso == AVISO_ACTIVO) // Si el estado del aviso está activo...
 		{
-			sprintf(strEstado,"Activos"); // Cargo la cadena strEstado con "Activos".
+			sprintf(strEstado,"activos"); // Cargo la cadena strEstado con "Activos".
 		}
 		else if (estadoAviso == AVISO_PAUSADO) // En cambio si el estado del aviso está pausado...
 		{
-			sprintf(strEstado,"Pausados"); // Cargo la cadena strEstado con "Pausados".
+			sprintf(strEstado,"pausados"); // Cargo la cadena strEstado con "Pausados".
 		}
 		printf("\nEl cliente con más avisos %s es %s %s, con %d avisos", strEstado, auxCliente.nombre, auxCliente.apellido, maximaCantidadAvisosPorEstado); // Imprimo los campos correspondientes de mi variable auxiliar auxCliente, junto con el nuevo máximo.
 		retorno = 0;
@@ -172,7 +172,7 @@ int informes_calcularRubroConMasAvisos (Aviso * pArrayAviso, int limiteAviso)
 				// El rubro del aviso actual va a ser el índice del array de rubros
 				// En la posicion de ese rubro contabilizo la cantidad de ocurrencias
 				int numeroRubro = pArrayAviso[indiceAviso].numeroDeRubro; // Cada número de rubro que encuentro mientras recorro el array de avisos, lo tomo como índice.
-				rubros[numeroRubro]++; // Aumenta el contador
+				rubros[numeroRubro]++; // Y aumento el contador
 			}
 		}
 		// Termino de recorrer el array de avisos
