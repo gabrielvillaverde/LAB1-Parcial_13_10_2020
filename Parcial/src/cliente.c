@@ -319,6 +319,7 @@ int cliente_buscarIndicePorId (Cliente * pArrayCliente, int limiteCliente, int i
 	return retorno;
 }*/
 
+
 /*int cliente_ordenarPorNombreLuegoPorId (Cliente * pArrayCliente, int limiteCliente)
 {
 	int retorno = -1;
@@ -358,3 +359,10 @@ int cliente_buscarIndicePorId (Cliente * pArrayCliente, int limiteCliente, int i
 	return retorno;
 }
 */
+
+/*
+ * Función strncmp
+ * Si retorna 0, es porque las cadenas son iguales.
+ * Si la primera cadena es mayor a la segunda, retorna un valor positivo.
+ * Si la segunda cadena es mayor a la primera, retorna un valor negativo.
+ */
